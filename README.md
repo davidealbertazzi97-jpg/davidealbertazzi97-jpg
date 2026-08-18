@@ -14,7 +14,7 @@ An editorial index of my public work across agentic systems, educational softwar
 
 ### Education
 
-- [OpenTeacherAgent](https://github.com/davidealbertazzi97-jpg/OpenTeacherAgent) — agentic educational authoring in a single binary, with interactive exercises and standalone HTML export.
+- [Open Teacher Agent](https://github.com/davidealbertazzi97-jpg/OpenTeacherAgent) — agentic educational authoring in a single binary, with interactive exercises and standalone HTML export.
 - [TeacherAgent.ex](https://github.com/davidealbertazzi97-jpg/TeacherAgent.ex) — experimental eXeLearning fork with AI-assisted interactive authoring.
 
 ### Privacy-first local AI
