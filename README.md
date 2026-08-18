@@ -2,7 +2,7 @@
 
 This is the profile repository and the source of the central GitHub Pages site:
 
-**[davidealbertazzi97-jpg.github.io](https://davidealbertazzi97-jpg.github.io/)**
+**[Open the live project index](https://davidealbertazzi97-jpg.github.io/davidealbertazzi97-jpg/)**
 
 An editorial index of my public work across agentic systems, educational software and local-first privacy tools.
 
