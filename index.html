@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080a0b">
+  <meta name="description" content="Davide Albertazzi — indice premium dei progetti open source, sistemi agentici, didattica e strumenti privacy-first.">
+  <title>Davide Albertazzi // Project Index</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #080a0b;
+      --bg-soft: #0d1012;
+      --panel: rgba(17, 20, 22, .94);
+      --panel-strong: #131719;
+      --line: rgba(226, 231, 229, .14);
+      --line-strong: rgba(255, 90, 23, .46);
+      --text: #f4f1ea;
+      --muted: #a9adb0;
+      --faint: #6c7377;
+      --orange: #ff5a17;
+      --orange-hot: #ff8b2b;
+      --steel: #8da0a5;
+      --shadow: 0 24px 80px rgba(0, 0, 0, .48);
+      --radius: 4px;
+      --max: 1180px;
+    }
+
+    :root[data-theme="light"] {
+      color-scheme: light;
+      --bg: #e7e9e7;
+      --bg-soft: #f1f2ef;
+      --panel: rgba(248, 249, 246, .96);
+      --panel-strong: #ffffff;
+      --line: rgba(17, 22, 23, .16);
+      --line-strong: rgba(205, 65, 8, .55);
+      --text: #111516;
+      --muted: #4f5a5e;
+      --faint: #667176;
+      --orange: #c94008;
+      --orange-hot: #e45a16;
+      --steel: #38545c;
+      --shadow: 0 22px 70px rgba(30, 39, 40, .16);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      min-width: 320px;
+      margin: 0;
+      overflow-x: hidden;
+      background:
+        linear-gradient(rgba(255, 255, 255, .027) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .027) 1px, transparent 1px),
+        radial-gradient(circle at 50% -10%, rgba(255, 90, 23, .15), transparent 41%),
+        var(--bg);
+      background-size: 38px 38px, 38px 38px, auto, auto;
+      color: var(--text);
+      font-family: Arial, Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    body::before {
+      position: fixed;
+      z-index: -1;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, transparent 0 3px, rgba(255, 255, 255, .011) 4px);
+      content: "";
+      pointer-events: none;
+    }
+
+    a { color: inherit; }
+    a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid var(--orange-hot); outline-offset: 4px; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+    .shell { width: min(var(--max), calc(100% - 36px)); margin: 0 auto; }
+
+    .topbar {
+      width: min(var(--max), calc(100% - 36px));
+      min-height: 78px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand { display: inline-flex; align-items: center; gap: 12px; min-width: 0; text-decoration: none; }
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      flex: 0 0 auto;
+      place-items: center;
+      border: 1px solid var(--orange);
+      background: linear-gradient(145deg, var(--orange), #6e1d09);
+      color: #0b0c0d;
+      font: 900 15px/1 Impact, "Arial Narrow", sans-serif;
+      letter-spacing: .04em;
+      box-shadow: 4px 4px 0 rgba(0, 0, 0, .34);
+    }
+
+    .brand-copy { display: grid; gap: 1px; min-width: 0; }
+    .brand-copy strong { overflow: hidden; font-size: 12px; letter-spacing: .16em; text-overflow: ellipsis; white-space: nowrap; }
+    .brand-copy small { color: var(--muted); font-size: 9px; letter-spacing: .13em; white-space: nowrap; }
+    .top-actions { display: flex; align-items: center; gap: 10px; }
+    .top-link, .mode-toggle {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--panel);
+      color: var(--muted);
+      font: 700 10px/1 Arial, sans-serif;
+      letter-spacing: .12em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    .top-link { padding: 10px 13px; }
+    .mode-toggle { padding: 10px 12px; cursor: pointer; }
+    .top-link:hover, .mode-toggle:hover { border-color: var(--line-strong); color: var(--text); }
+
+    @keyframes signalPulse {
+      0%, 100% { box-shadow: 0 0 0 4px rgba(255, 90, 23, .13), 0 0 18px var(--orange); }
+      50% { box-shadow: 0 0 0 8px rgba(255, 90, 23, .03), 0 0 30px var(--orange-hot); }
+    }
+    @keyframes commandFloat {
+      0%, 100% { transform: rotate(1.2deg) translateY(0); }
+      50% { transform: rotate(.45deg) translateY(-7px); }
+    }
+    @keyframes scanline { from { transform: translateY(-120%); } to { transform: translateY(420%); } }
+    @keyframes arrowDrop {
+      0%, 100% { opacity: .45; transform: translateY(-3px); }
+      50% { opacity: 1; transform: translateY(6px); }
+    }
+    @keyframes routeBlink {
+      0%, 55%, 100% { opacity: .72; }
+      58%, 68% { opacity: 1; color: var(--text); }
+    }
+    @keyframes cardSignal {
+      0%, 100% { box-shadow: 6px 6px 0 rgba(0, 0, 0, .2); }
+      50% { box-shadow: 8px 8px 0 rgba(255, 90, 23, .13); }
+    }
+
+    .hero {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1.02fr) minmax(300px, .98fr);
+      align-items: center;
+      gap: clamp(28px, 5vw, 82px);
+      min-height: 650px;
+      padding: 76px 0 68px;
+    }
+    .hero::after {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--orange), transparent);
+      content: "";
+      opacity: .7;
+    }
+    .hero-copy { position: relative; z-index: 1; min-width: 0; }
+    .eyebrow, .section-kicker, .card-index {
+      margin: 0;
+      color: var(--orange-hot);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .18em;
+      line-height: 1.3;
+      text-transform: uppercase;
+    }
+    .eyebrow { display: flex; align-items: center; gap: 9px; }
+    .signal { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); animation: signalPulse 2.8s ease-in-out infinite; }
+    h1, h2, h3 { margin: 0; font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif; font-weight: 900; letter-spacing: .025em; line-height: .92; text-transform: uppercase; }
+    h1 { max-width: 670px; margin-top: 20px; font-size: clamp(54px, 7.3vw, 94px); overflow-wrap: normal; }
+    h1 span { color: var(--orange); }
+    .hero-lead { max-width: 590px; margin: 27px 0 0; color: var(--muted); font-size: clamp(16px, 1.8vw, 20px); line-height: 1.52; }
+    .route-steps { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 0; }
+    .route-step { display: inline-flex; align-items: center; gap: 7px; padding: 7px 9px; border: 1px solid var(--line); color: var(--faint); font-size: 9px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; animation: routeBlink 5s ease-in-out infinite; }
+    .route-step:nth-child(2) { animation-delay: .8s; }
+    .route-step:nth-child(3) { animation-delay: 1.6s; }
+    .route-step b { color: var(--orange); font-size: 10px; }
+    .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-top: 33px; }
+    .primary-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border: 1px solid var(--orange);
+      background: var(--orange);
+      color: #120b08;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .12em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: transform .2s ease, background .2s ease;
+    }
+    .primary-action span { font-size: 20px; line-height: .6; animation: arrowDrop 1.4s ease-in-out infinite; }
+    .primary-action:hover { background: var(--orange-hot); transform: translateY(2px); }
+    .hero-note { color: var(--faint); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+
+    .command-panel {
+      position: relative;
+      isolation: isolate;
+      min-width: 0;
+      overflow: hidden;
+      border: 1px solid var(--line-strong);
+      background: #050606;
+      box-shadow: var(--shadow), 9px 9px 0 rgba(255, 90, 23, .16);
+      animation: commandFloat 8s ease-in-out infinite;
+    }
+    .command-panel::before { position: absolute; z-index: 2; inset: 13px; border: 1px solid rgba(255, 255, 255, .15); content: ""; pointer-events: none; }
+    .command-panel::after { position: absolute; z-index: 3; right: -1px; bottom: -1px; width: 38px; height: 38px; border-right: 2px solid var(--orange); border-bottom: 2px solid var(--orange); content: ""; pointer-events: none; }
+    .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 21px 16px; border-bottom: 1px solid rgba(255, 255, 255, .12); color: #a9adb0; font: 700 10px/1 Arial, sans-serif; letter-spacing: .14em; text-transform: uppercase; }
+    .panel-head strong { color: var(--orange-hot); font-weight: 800; }
+    .panel-body { position: relative; padding: 36px 32px 30px; background: radial-gradient(circle at 85% 12%, rgba(255, 90, 23, .16), transparent 28%), #050606; }
+    .panel-body::after { position: absolute; z-index: 1; top: -10%; right: 0; left: 0; height: 22%; background: linear-gradient(180deg, transparent, rgba(255, 90, 23, .14), transparent); content: ""; mix-blend-mode: screen; pointer-events: none; animation: scanline 5.5s linear infinite; }
+    .panel-matrix { position: relative; z-index: 2; display: grid; gap: 14px; }
+    .matrix-line { display: grid; grid-template-columns: 112px 1fr; gap: 15px; color: #737a7e; font: 11px/1.4 "SFMono-Regular", Consolas, monospace; }
+    .matrix-line b { color: #dfe5e3; font-weight: 500; }
+    .matrix-line b::before { color: var(--orange); content: "> "; }
+    .matrix-line .ok { color: var(--orange-hot); }
+    .panel-divider { height: 1px; margin: 11px 0 2px; background: rgba(255, 255, 255, .12); }
+    .panel-stamp { position: relative; z-index: 2; display: inline-block; margin: 30px 0 0; padding: 7px 9px; border: 1px solid rgba(255, 90, 23, .7); background: rgba(5, 6, 6, .72); color: var(--orange-hot); font: 900 10px/1 Arial, sans-serif; letter-spacing: .17em; text-transform: uppercase; }
+    .panel-arrows { position: absolute; z-index: 3; right: 24px; bottom: 18px; color: var(--orange); font: 900 23px/.58 Impact, sans-serif; text-align: center; text-shadow: 0 0 18px rgba(255, 90, 23, .7); animation: arrowDrop 1.5s ease-in-out infinite; }
+
+    .status-strip { display: grid; grid-template-columns: repeat(4, 1fr); margin: 0 0 88px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .status-strip div { min-width: 0; padding: 16px 18px 17px; border-right: 1px solid var(--line); }
+    .status-strip div:last-child { border-right: 0; }
+    .status-strip span { display: block; color: var(--faint); font-size: 9px; letter-spacing: .16em; text-transform: uppercase; }
+    .status-strip strong { display: block; margin-top: 4px; color: var(--text); font: 900 18px/1 Impact, "Arial Narrow", sans-serif; letter-spacing: .04em; text-transform: uppercase; }
+    .status-strip strong::after { color: var(--orange); content: "  ●"; font: 10px/1 Arial, sans-serif; vertical-align: middle; }
+
+    section { scroll-margin-top: 24px; }
+    .projects-section { padding-bottom: 96px; }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 25px; }
+    .section-head h2 { margin-top: 10px; font-size: clamp(38px, 5.2vw, 66px); }
+    .section-head > p { max-width: 330px; margin: 0; color: var(--muted); font-size: 13px; text-align: right; }
+    .controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 25px; }
+    .filter-row { display: flex; flex-wrap: wrap; gap: 7px; }
+    .filter {
+      padding: 9px 11px;
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--faint);
+      cursor: pointer;
+      font: 800 9px/1 Arial, sans-serif;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .filter:hover, .filter[aria-pressed="true"] { border-color: var(--orange); background: rgba(255, 90, 23, .1); color: var(--orange-hot); }
+    .search-wrap { position: relative; min-width: min(100%, 265px); }
+    .search-wrap::before { position: absolute; top: 50%; left: 12px; color: var(--orange); content: "/"; font: 900 14px/1 monospace; transform: translateY(-51%); }
+    .search { width: 100%; padding: 10px 13px 10px 28px; border: 1px solid var(--line); border-radius: 0; outline: 0; background: var(--panel); color: var(--text); font: 11px/1.3 "SFMono-Regular", Consolas, monospace; }
+    .search::placeholder { color: var(--faint); }
+    .catalog-status { min-height: 18px; margin: -6px 0 14px; color: var(--faint); font: 10px/1.3 "SFMono-Regular", Consolas, monospace; }
+    .project-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+    .project-card {
+      position: relative;
+      display: flex;
+      min-width: 0;
+      flex-direction: column;
+      min-height: 305px;
+      padding: 22px 21px 19px;
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, var(--panel), rgba(10, 12, 13, .94));
+      box-shadow: 6px 6px 0 rgba(0, 0, 0, .2);
+      transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+    }
+    .project-card::before { position: absolute; top: -1px; left: -1px; width: 34px; height: 34px; border-top: 2px solid var(--orange); border-left: 2px solid var(--orange); content: ""; opacity: .7; }
+    .project-card:hover { border-color: var(--line-strong); transform: translateY(-4px); box-shadow: 8px 10px 0 rgba(255, 90, 23, .11); }
+    .project-card.featured { grid-column: span 1; border-color: rgba(255, 90, 23, .34); background: linear-gradient(145deg, rgba(44, 23, 16, .93), var(--panel)); animation: cardSignal 6s ease-in-out infinite; }
+    .project-card.featured:nth-child(2) { animation-delay: .8s; }
+    .project-card.featured:nth-child(3) { animation-delay: 1.6s; }
+    .project-card.is-hidden { display: none; }
+    .card-top { display: flex; align-items: start; justify-content: space-between; gap: 12px; }
+    .card-index { color: var(--orange); font-size: 9px; }
+    .card-signal { width: 7px; height: 7px; flex: 0 0 auto; margin-top: 3px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 12px var(--orange); }
+    .card-title { margin-top: 21px; font-size: clamp(27px, 2.8vw, 38px); overflow-wrap: anywhere; }
+    .project-card.featured .card-title { color: var(--orange-hot); }
+    .card-description { margin: 16px 0 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+    .card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 18px; }
+    .card-tag { padding: 5px 7px; border: 1px solid var(--line); color: var(--steel); font: 800 8px/1 Arial, sans-serif; letter-spacing: .1em; text-transform: uppercase; }
+    .card-bottom { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: auto; padding-top: 23px; }
+    .card-license { color: var(--faint); font: 9px/1 "SFMono-Regular", Consolas, monospace; text-transform: uppercase; }
+    .card-link { color: var(--orange-hot); font-size: 11px; font-weight: 900; letter-spacing: .09em; text-decoration: none; text-transform: uppercase; }
+    .card-link:hover { color: var(--text); }
+    .no-results { display: none; padding: 26px; border: 1px dashed var(--line-strong); color: var(--muted); font: 12px/1.4 "SFMono-Regular", Consolas, monospace; }
+    .no-results.is-visible { display: block; }
+
+    .principles-section { padding: 0 0 98px; }
+    .principles-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .principle { padding: 25px 22px 24px; border-top: 1px solid var(--orange); border-bottom: 1px solid var(--line); background: rgba(17, 20, 22, .42); }
+    .principle-number { color: var(--orange); font: 900 11px/1 monospace; letter-spacing: .1em; }
+    .principle h3 { margin-top: 19px; font-size: 29px; }
+    .principle p { margin: 13px 0 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+
+    .footer { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 25px 0 35px; border-top: 1px solid var(--line); color: var(--faint); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; }
+    .footer a { color: var(--orange-hot); text-decoration: none; }
+    .footer a:hover { color: var(--text); }
+
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; min-height: 0; padding-top: 67px; }
+      .command-panel { width: min(100%, 620px); justify-self: center; }
+      .project-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .project-card.featured { grid-column: span 1; }
+    }
+
+    @media (max-width: 620px) {
+      .shell, .topbar { width: min(var(--max), calc(100% - 26px)); }
+      .topbar { min-height: 70px; }
+      .brand-copy small, .top-link { display: none; }
+      .brand-copy strong { font-size: 10px; }
+      .hero { padding: 54px 0 50px; }
+      h1 { font-size: clamp(47px, 16vw, 78px); }
+      .hero-lead { font-size: 15px; }
+      .panel-body { padding: 31px 22px 28px; }
+      .matrix-line { grid-template-columns: 84px 1fr; gap: 9px; font-size: 10px; }
+      .status-strip { grid-template-columns: repeat(2, 1fr); margin-bottom: 70px; }
+      .status-strip div:nth-child(2) { border-right: 0; }
+      .status-strip div:nth-child(-n + 2) { border-bottom: 1px solid var(--line); }
+      .section-head { display: block; }
+      .section-head > p { margin-top: 16px; text-align: left; }
+      .controls { display: block; }
+      .search-wrap { margin-top: 13px; }
+      .project-grid, .principles-grid { grid-template-columns: 1fr; }
+      .project-card.featured { grid-column: span 1; }
+      .project-card { min-height: 275px; }
+      .footer { display: block; line-height: 1.8; }
+      .footer span { display: block; margin-bottom: 7px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Torna all'inizio">
+      <span class="brand-mark" aria-hidden="true">DA</span>
+      <span class="brand-copy">
+        <strong>DAVIDE ALBERTAZZI</strong>
+        <small>OPEN PROJECT INDEX // GITHUB</small>
+      </span>
+    </a>
+    <div class="top-actions">
+      <a class="top-link" href="https://github.com/davidealbertazzi97-jpg" target="_blank" rel="noreferrer">Profilo ↗</a>
+      <button class="mode-toggle" id="mode-toggle" type="button" aria-label="Attiva modalità chiara">Light</button>
+    </div>
+  </header>
+
+  <main id="top">
+    <div class="shell">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="signal" aria-hidden="true"></span> Catalogo pubblico // online</p>
+          <h1 id="hero-title">SISTEMI<br><span>CHE RESTANO</span><br>TUOI.</h1>
+          <p class="hero-lead">Un indice centrale dei miei progetti open source: agenti, strumenti didattici e applicazioni privacy-first progettati per funzionare davvero, anche vicino all'hardware.</p>
+          <div class="route-steps" aria-label="Aree di ricerca">
+            <span class="route-step"><b>01</b> Agentic systems</span>
+            <span class="route-step"><b>02</b> Education</span>
+            <span class="route-step"><b>03</b> Local privacy</span>
+          </div>
+          <div class="hero-actions">
+            <a class="primary-action" href="#projects">Esplora i progetti <span aria-hidden="true">↓</span></a>
+            <span class="hero-note">Aggiornato · 19.08.2026</span>
+          </div>
+        </div>
+
+        <aside class="command-panel" aria-label="Stato del catalogo">
+          <div class="panel-head"><span>PROFILE / MAIN NODE</span><strong>● LIVE</strong></div>
+          <div class="panel-body">
+            <div class="panel-matrix">
+              <div class="matrix-line"><span>identity</span><b>davidealbertazzi97-jpg</b></div>
+              <div class="matrix-line"><span>catalog</span><b class="ok">10 public repositories</b></div>
+              <div class="matrix-line"><span>mission</span><b>useful software / local control</b></div>
+              <div class="panel-divider"></div>
+              <div class="matrix-line"><span>signal</span><b class="ok">open source // ready to inspect</b></div>
+            </div>
+            <span class="panel-stamp">NO CLOUD REQUIRED</span>
+            <div class="panel-arrows" aria-hidden="true">↓<br>↓</div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="status-strip" aria-label="Statistiche del catalogo">
+        <div><span>Public projects</span><strong>10</strong></div>
+        <div><span>Primary focus</span><strong>Local-first</strong></div>
+        <div><span>Core domains</span><strong>03</strong></div>
+        <div><span>Access mode</span><strong>Open</strong></div>
+      </section>
+
+      <section class="projects-section" id="projects" aria-labelledby="projects-title">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Repository registry // 10 entries</p>
+            <h2 id="projects-title">PROJECT INDEX</h2>
+          </div>
+          <p>Ogni card porta direttamente alla repository pubblica, con una sintesi rapida dell'idea e del suo valore pratico.</p>
+        </div>
+
+        <div class="controls">
+          <div class="filter-row" aria-label="Filtra i progetti">
+            <button class="filter" type="button" data-filter="all" aria-pressed="true">Tutti</button>
+            <button class="filter" type="button" data-filter="agents" aria-pressed="false">Agents</button>
+            <button class="filter" type="button" data-filter="education" aria-pressed="false">Education</button>
+            <button class="filter" type="button" data-filter="privacy" aria-pressed="false">Privacy</button>
+            <button class="filter" type="button" data-filter="accessibility" aria-pressed="false">Accessibilità</button>
+          </div>
+          <label class="search-wrap">
+            <span class="sr-only">Cerca nel catalogo</span>
+            <input class="search" id="project-search" type="search" placeholder="cerca / repository / idea" autocomplete="off">
+          </label>
+        </div>
+        <p class="catalog-status" id="catalog-status" aria-live="polite">Showing 10 / 10 public projects</p>
+
+        <div class="project-grid" id="project-grid">
+          <article class="project-card featured" data-category="agents" data-search="open upsilon logic playground logical agentic memory vault swarm orchestrator">
+            <div class="card-top"><p class="card-index">01 // AGENTIC CORE</p><span class="card-signal" aria-hidden="true"></span></div>
+            <h3 class="card-title">Open Upsilon Logic</h3>
+            <p class="card-description">Memoria agentica e orchestrazione swarm con guardrail logici deterministici, progettati per ridurre deriva di contesto, sprechi di token e allucinazioni.</p>
+            <div class="card-tags"><span class="card-tag">Prolog-style</span><span class="card-tag">Swarm</span><span class="card-tag">Memory</span></div>
+            <div class="card-bottom"><span class="card-license">Public / open source</span><a class="card-link" href="https://github.com/davidealbertazzi97-jpg/OPEN-UPSILON-LOGIC" target="_blank" rel="noreferrer">Apri repo ↗</a></div>
+          </article>
+
+          <article class="project-card featured" data-category="education" data-search="openteacheragent teacher education authoring rust vue exercise html offline">
+            <div class="card-top"><p class="card-index">02 // EDUCATION ENGINE</p><span class="card-signal" aria-hidden="true"></span></div>
+            <h3 class="card-title">OpenTeacherAgent</h3>
+            <p class="card-description">Authoring educativo agentico in un singolo binario: dalla richiesta in linguaggio naturale a esercizi interattivi, corsi completi ed export HTML autonomo.</p>
+            <div class="card-tags"><span class="card-tag">Rust + Vue</span><span class="card-tag">AI authoring</span><span class="card-tag">Offline</span></div>
+            <div class="card-bottom"><span class="card-license">AGPL-3.0-or-later</span><a class="card-link" href="https://github.com/davidealbertazzi97-jpg/OpenTeacherAgent" target="_blank" rel="noreferrer">Apri repo ↗</a></div>
+          </article>
+
+          <article class="project-card featured" data-category="privacy" data-search="ai privacy studio document ocr transcription redaction encrypted cpu no gpu local">
+            <div class="card-top"><p class="card-index">03 // PRIVACY DESK</p><span class="card-signal" aria-hidden="true"></span></div>
+            <h3 class="card-title">AI Privacy Studio</h3>
+            <p class="card-description">Elaborazione locale di documenti per docenti e professionisti: OCR, trascrizione, redazione, conversione e storage cifrato senza GPU o cloud inference.</p>
+            <div class="card-tags"><span class="card-tag">CPU-only</span><span class="card-tag">OCR</span><span class="card-tag">Local AI</span></div>
+            <div class="card-bottom"><span class="card-license">Public / privacy-first</span><a class="card-link" href="https://github.com/davidealbertazzi97-jpg/AI-PRIVACY-STUDIO-NO-GPU" target="_blank" rel="noreferrer">Apri repo ↗</a></div>
+          </article>
+
+          <article class="project-card" data-category="education" data-search="teacheragent ex teacher educational authoring exelearning ai interactive resources">
+            <div class="card-top"><p class="card-index">04 // TEACHING TOOLS</p><span class="card-signal" aria-hidden="true"></span></div>
+            <h3 class="card-title">TeacherAgent.ex</h3>
+            <p class="card-description">Fork sperimentale di eXeLearning per creare risorse didattiche interattive, pagine strutturate e attività HTML5/JS/CSS con supporto AI.</p>
+            <div class="card-tags"><span class="card-tag">eXeLearning</span><span class="card-tag">AGPLv3</span><span class="card-tag">Interactive</span></div>
+            <div class="card-bottom"><span class="card-license">AGPLv3</span><a class="card-link" href="https://github.com/davidealbertazzi97-jpg/TeacherAgent.ex" target="_blank" rel="noreferrer">Apri repo ↗</a></div>
+          </article>
+
+          <article class="project-card" data-category="accessibility" data-search="local reader accessibility studio inclusive reading speech ocr education cpu no gpu">
+            <div class="card-top"><p class="card-index">05 // ACCESSIBILITY</p><span class="card-signal" aria-hidden="true"></span></div>
+            <h3 class="card-title">Local Reader</h3>
+            <p class="card-description">Lettura inclusiva sul dispositivo: OCR e sintesi vocale AI per documenti difficili, con dati, voce e workflow che restano sul computer.</p>
+            <div class="card-tags"><span class="card-tag">Inclusive</span><span class="card-tag">Speech</span><span class="card-tag">CPU-only</span></div>
+            <div class="card-bottom"><span class="card-license">Local Accessibility</span><a class="card-link" href="https://github.com/davidealbertazzi97-jpg/LOCAL-READER-NO-GPU" target="_blank" rel="noreferrer">Apri repo ↗</a></div>
+          </article>
+
+          <article class="project-card" data-category="privacy" data-search="photo privacy studio image redaction exif gps yolo yunet opencv cpu offline">
+            <div class="card-top"><p class="card-index">06 // VISUAL PRIVACY</p><span class="card-signal" aria-hidden="true"></span></div>
+            <h3 class="card-title">Photo Privacy Studio</h3>
+            <p class="card-description">Redazione automatica o manuale delle informazioni sensibili nelle fotografie e pulizia dei metadati EXIF/GPS con una pipeline di visione su CPU.</p>
+            <div class="card-tags"><span class="card-tag">Computer vision</span><span class="card-tag">EXIF</span><span class="card-tag">Offline</span></div>
+            <div class="card-bottom"><span class="card-license">GPL-3.0</span><a class="card-link" href="https://github.com/davidealbertazzi97-jpg/photo-privacy-ai-cpu-only" target="_blank" rel="noreferrer">Apri repo ↗</a></div>
+          </article>
+
+          <article class="project-card" data-category="privacy" data-search="video privacy studio faces plates anonymization tracking temporal box persistence opencv cpu">
+            <div class="card-top"><p class="card-index">07 // VIDEO PRIVACY</p><span class="card-signal" aria-hidden="true"></span></div>
+            <h3 class="card-title">Video Privacy Studio</h3>
+            <p class="card-description">Anonimizzazione locale di volti e targhe nei video con rilevamento multi-cascade e tracking temporale continuo, senza GPU.</p>
+            <div class="card-tags"><span class="card-tag">Video</span><span class="card-tag">Tracking</span><span class="card-tag">CPU-only</span></div>
+            <div class="card-bottom"><span class="card-license">GPL-3.0</span><a class="card-link" href="https://github.com/davidealbertazzi97-jpg/video-privacy-ai-no-gpu" target="_blank" rel="noreferrer">Apri repo ↗</a></div>
+          </article>
+
+          <article class="project-card" data-category="privacy" data-search="audio privacy studio pii transcription beep mute ffmpeg local cpu video audio">
+            <div class="card-top"><p class="card-index">08 // AUDIO PRIVACY</p><span class="card-signal" aria-hidden="true"></span></div>
+            <h3 class="card-title">Audio Privacy Studio</h3>
+            <p class="card-description">Trascrive audio e video, individua PII, offre una revisione interattiva e applica censura selettiva con beep o silenzio, tutto in locale.</p>
+            <div class="card-tags"><span class="card-tag">PII</span><span class="card-tag">FFmpeg</span><span class="card-tag">Local AI</span></div>
+            <div class="card-bottom"><span class="card-license">Public / CPU-only</span><a class="card-link" href="https://github.com/davidealbertazzi97-jpg/audio-privacy-ai-cpu-only" target="_blank" rel="noreferrer">Apri repo ↗</a></div>
+          </article>
+
+          <article class="project-card" data-category="accessibility" data-search="offline ai translation gemma speech document translation no gpu cpu local">
+            <div class="card-top"><p class="card-index">09 // LANGUAGE TOOLS</p><span class="card-signal" aria-hidden="true"></span></div>
+            <h3 class="card-title">Offline AI Translation</h3>
+            <p class="card-description">Workstation di traduzione 100% locale per conversazioni vocali a due persone e documenti, costruita per funzionare senza GPU dopo il setup.</p>
+            <div class="card-tags"><span class="card-tag">Gemma</span><span class="card-tag">Speech</span><span class="card-tag">No cloud</span></div>
+            <div class="card-bottom"><span class="card-license">Public / local-first</span><a class="card-link" href="https://github.com/davidealbertazzi97-jpg/offline-ai-translation-no-gpu" target="_blank" rel="noreferrer">Apri repo ↗</a></div>
+          </article>
+
+          <article class="project-card" data-category="accessibility" data-search="lite dictation daemon vosk italian linux mint cinnamon x11 offline microphone systemd">
+            <div class="card-top"><p class="card-index">10 // INPUT SYSTEMS</p><span class="card-signal" aria-hidden="true"></span></div>
+            <h3 class="card-title">Lite Dictation Daemon</h3>
+            <p class="card-description">Demone leggero di dettatura italiana offline per desktop Linux, con Vosk, servizio systemd utente, autostart e scorciatoia configurabile.</p>
+            <div class="card-tags"><span class="card-tag">Linux</span><span class="card-tag">Vosk</span><span class="card-tag">Italiano</span></div>
+            <div class="card-bottom"><span class="card-license">Public / lightweight</span><a class="card-link" href="https://github.com/davidealbertazzi97-jpg/LIGHT-DICTATION-DAEMON" target="_blank" rel="noreferrer">Apri repo ↗</a></div>
+          </article>
+        </div>
+        <p class="no-results" id="no-results">Nessun progetto corrisponde a questo filtro. Prova un'altra rotta di ricerca.</p>
+      </section>
+
+      <section class="principles-section" aria-labelledby="principles-title">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Operating principles // signal</p>
+            <h2 id="principles-title">THE DESIGN CODE</h2>
+          </div>
+          <p>Una linea comune attraversa repository diverse: costruire strumenti leggibili, utili e controllabili.</p>
+        </div>
+        <div class="principles-grid">
+          <article class="principle"><span class="principle-number">01</span><h3>Local by default</h3><p>Quando i dati sono sensibili, il primo confine di sicurezza è il dispositivo dell'utente: meno dipendenze, meno esposizione, più controllo.</p></article>
+          <article class="principle"><span class="principle-number">02</span><h3>Teaching first</h3><p>La tecnologia deve arrivare fino a una persona reale: un docente, uno studente, un professionista, con un flusso comprensibile.</p></article>
+          <article class="principle"><span class="principle-number">03</span><h3>Ship the tool</h3><p>Repository, installer, interfaccia e documentazione fanno parte dello stesso progetto: l'idea conta quando può essere usata.</p></article>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <span>Davide Albertazzi // public project index // 2026</span>
+        <a href="https://github.com/davidealbertazzi97-jpg" target="_blank" rel="noreferrer">github.com/davidealbertazzi97-jpg ↗</a>
+      </footer>
+    </div>
+  </main>
+
+  <script>
+    (() => {
+      const root = document.documentElement;
+      const modeToggle = document.getElementById('mode-toggle');
+      const storedTheme = localStorage.getItem('da-project-index-theme');
+      if (storedTheme === 'light') root.dataset.theme = 'light';
+      const syncThemeLabel = () => {
+        const light = root.dataset.theme === 'light';
+        modeToggle.textContent = light ? 'Dark' : 'Light';
+        modeToggle.setAttribute('aria-label', light ? 'Attiva modalità scura' : 'Attiva modalità chiara');
+      };
+      syncThemeLabel();
+      modeToggle.addEventListener('click', () => {
+        const light = root.dataset.theme === 'light';
+        if (light) delete root.dataset.theme;
+        else root.dataset.theme = 'light';
+        localStorage.setItem('da-project-index-theme', light ? 'dark' : 'light');
+        syncThemeLabel();
+      });
+
+      const cards = [...document.querySelectorAll('.project-card')];
+      const filters = [...document.querySelectorAll('.filter')];
+      const search = document.getElementById('project-search');
+      const status = document.getElementById('catalog-status');
+      const noResults = document.getElementById('no-results');
+      let activeFilter = 'all';
+
+      const updateCatalog = () => {
+        const query = search.value.trim().toLowerCase();
+        let visible = 0;
+        cards.forEach(card => {
+          const categoryMatch = activeFilter === 'all' || card.dataset.category === activeFilter;
+          const searchMatch = !query || card.dataset.search.includes(query);
+          const show = categoryMatch && searchMatch;
+          card.classList.toggle('is-hidden', !show);
+          if (show) visible += 1;
+        });
+        status.textContent = `Showing ${visible} / ${cards.length} public projects`;
+        noResults.classList.toggle('is-visible', visible === 0);
+      };
+
+      filters.forEach(filter => filter.addEventListener('click', () => {
+        activeFilter = filter.dataset.filter;
+        filters.forEach(item => item.setAttribute('aria-pressed', String(item === filter)));
+        updateCatalog();
+      }));
+      search.addEventListener('input', updateCatalog);
+    })();
+  </script>
+</body>
+</html>
